@@ -264,4 +264,23 @@ pub enum UpdateSubcommands {
         #[structopt(short = "u", long)]
         new_uri: String,
     },
+    /// Update the metadata Name and Symbol, keeping the rest of the data the same
+    #[structopt(name = "name")]
+    Name {
+        /// Path to the creator's keypair file
+        #[structopt(short, long)]
+        keypair: String,
+
+        /// Mint account of corresponding metadata to update
+        #[structopt(short, long)]
+        account: String,
+
+        /// New Name
+        #[structopt(short = "u", long)]
+        new_name: String,
+
+        /// New Symbol
+        #[structopt(short = "u", long)]
+        new_symbol: String,
+    },
 }

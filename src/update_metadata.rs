@@ -89,6 +89,50 @@ pub fn update_uri(
     Ok(())
 }
 
+
+pub fn update_name(
+    client: &RpcClient,
+    keypair: &String,
+    mint_account: &String,
+    new_name: &String,
+    new_symbol: &String,
+) -> Result<()> {
+    let keypair = parse_keypair(keypair)?;
+    let program_id = Pubkey::from_str(METAPLEX_PROGRAM_ID)?;
+    let mint_pubkey = Pubkey::from_str(mint_account)?;
+    let update_authority = keypair.pubkey();
+
+    let metadata_account = get_metadata_pda(mint_pubkey);
+    let metadata = decode(client, mint_account)?;
+
+    let mut data = metadata.data;
+    data.name = new_name.to_string();
+    data.symbol = new_symbol.to_string();
+
+    let ix = update_metadata_accounts(
+        program_id,
+        metadata_account,
+        update_authority,
+        None,
+        Some(data),
+        None,
+    );
+
+    let (recent_blockhash, _) = client.get_recent_blockhash()?;
+    let tx = Transaction::new_signed_with_payer(
+        &[ix],
+        Some(&update_authority),
+        &[&keypair],
+        recent_blockhash,
+    );
+
+    let sig = client.send_and_confirm_transaction(&tx)?;
+    println!("Tx sig: {:?}", sig);
+
+    Ok(())
+}
+
+
 pub fn set_primary_sale_happened(
     client: &RpcClient,
     keypair: &String,

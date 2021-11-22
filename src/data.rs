@@ -7,6 +7,14 @@ pub struct NewUri {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct NewName {
+    mint_account: String,
+    new_name: String,
+    new_symbol: String,
+}
+
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct NFTData {
     pub name: String,
     pub symbol: String,

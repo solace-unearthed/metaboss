@@ -48,6 +48,12 @@ pub fn process_update(client: &RpcClient, commands: UpdateSubcommands) -> Result
             account,
             new_uri,
         } => update_uri(&client, &keypair, &account, &new_uri),
+        UpdateSubcommands::Name {
+            keypair,
+            account,
+            new_name,
+            new_symbol,
+        } => update_name(&client, &keypair, &account, &new_name, &new_symbol),
     }
 }
 
